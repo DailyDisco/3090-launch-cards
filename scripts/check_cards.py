@@ -11,6 +11,8 @@ REQUIRED = ["Model", "Quant", "Engine", "Engine version", "TP / PP", "Context le
 
 errors = []
 for md in sorted(ROOT.rglob("*.md")):
+    if "evidence" in md.parts:
+        continue  # vendored protocol writeups keep their own punctuation
     text = md.read_text()
     if "\u2014" in text:
         errors.append(f"{md.relative_to(ROOT)}: contains an em dash")
@@ -21,5 +23,7 @@ for card in sorted((ROOT / "cards").glob("[0-9]*.md")):
             errors.append(f"{card.name}: missing '{field}'")
     if "measured by day on day-vault" not in text.lower():
         errors.append(f"{card.name}: missing 'Measured by Day on day-vault'")
+    if "nanbeige" in text.lower():
+        errors.append(f"{card.name}: Nanbeige is retired and must not appear on an active card")
 print("\n".join(errors) or "cards OK")
 sys.exit(1 if errors else 0)

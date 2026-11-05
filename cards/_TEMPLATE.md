@@ -1,6 +1,6 @@
-<!-- Copy to cards/NNN-<model>-<quant>-tp<N>.md. Replace every <...>. Leave unmeasured values as `TBD (Day's run)`. -->
+<!-- Copy to cards/NNN-<model>-<quant>-<layout>.md. Replace every <...>. Leave unmeasured values as `TBD (Day's run)`. -->
 
-# Card NNN: <model> <quant>, <engine> TP=<N>
+# Card NNN: <model> <quant>, <engine>, <layout>
 
 Measured by Day on day-vault.
 
@@ -10,11 +10,11 @@ Measured by Day on day-vault.
 | Model license | <license from the HF repo> |
 | Architecture | <architectures from config.json> |
 | Quant | <BF16 / FP8 / AWQ INT4 / ...> (checkpoint: `<org/repo>`) |
-| Engine | <vLLM / SGLang> |
-| Engine version | <exact version, from `vllm_version.txt` or `python -c "import sglang;print(sglang.__version__)"`> |
-| TP / PP | TP=<N>, PP=<M> |
+| Engine | <vLLM / SGLang / EXL3 / llama.cpp / ...> |
+| Engine version | <exact version from that engine's own version command, or `not recorded in this protocol`> |
+| TP / PP | <TP=<N>, PP=<M>, or the card count when the protocol does not name a split> |
 | GPUs used | <CUDA_VISIBLE_DEVICES> |
-| Context length (served) | <--max-model-len / --context-length> |
+| Context length (served) | <served context, or `not recorded in this protocol`> |
 | Measured by | Day on day-vault ([hardware.md](../hardware.md)) |
 | Date measured | TBD (Day's run) |
 | Raw results | `<path to summary.json>` |
@@ -22,8 +22,10 @@ Measured by Day on day-vault.
 ## Launch command
 
 ```bash
-<exact command, copy-pasteable, no placeholders except the model path if local>
+<exact command that produced the numbers, copy-pasteable, no placeholders except the model path if local>
 ```
+
+If the protocol did not record the command, do not invent one. Say it was not recorded, and list only the engine, quant, and GPU count the protocol named. A vLLM line is not a stand-in for an EXL3 or llama.cpp run.
 
 ## Key flags and why
 
@@ -38,6 +40,8 @@ Bench: `<bench command or script>`. Definitions are in the [README](../README.md
 | Test | Input / output tokens | Concurrency | Prefill tok/s | Decode tok/s | Output tok/s (total) | TTFT mean (ms) | TPOT mean (ms) |
 |------|-----------------------|-------------|---------------|--------------|----------------------|----------------|----------------|
 | <name> | <in> / <out> | <c> | TBD (Day's run) | TBD (Day's run) | TBD (Day's run) | TBD (Day's run) | TBD (Day's run) |
+
+If the run used another protocol, replace this table with that protocol's metrics. Write `not measured in this protocol` for columns it did not record. Do not relabel end-to-end per-user tok/s as decode tok/s, and do not report `median_decode_tokens_per_s` as the user-facing speed.
 
 ## VRAM and power
 
