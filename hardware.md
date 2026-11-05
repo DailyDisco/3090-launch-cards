@@ -1,5 +1,3 @@
-<!-- PRIVATE / INTERNAL DRAFT. Not published. Going public still needs Day's explicit yes. -->
-
 # Hardware: day-vault
 
 8x NVIDIA RTX 3090, each power-capped at 160 W. The 1 November 2026 DayVault protocol ran on this box with those caps and unlock off.

@@ -1,8 +1,6 @@
-<!-- PRIVATE / INTERNAL DRAFT. Not published. Going public still needs Day's explicit yes. Do not share until Day says yes. -->
-
 # 8x 3090 launch cards
 
-Measured notes for models on consumer RTX 3090s over PCIe (no NVLink). This repo stays private until Day gives an explicit yes.
+Measured notes for models on consumer RTX 3090s over PCIe (no NVLink).
 
 Every active card has:
 
@@ -45,7 +43,6 @@ Power cap for the protocol: 160 W per GPU, unlock off. See [hardware.md](hardwar
 ## What this is not
 
 - Not a leaderboard. One rig, one dated protocol.
-- Not a published repo. Going public still needs Day's explicit yes.
 
 A paid pack with more models and tuned configs is planned. That writeup is not in this repo.
 
