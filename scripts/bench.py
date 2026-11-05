@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Engine-agnostic bench stub (STUB, internal draft).
+"""Engine-agnostic bench stub (STUB).
 
 Hits an OpenAI-compatible server with streaming completions, samples nvidia-smi
 every 500 ms, and writes one JSON file with:

@@ -1,5 +1,3 @@
-<!-- PRIVATE / INTERNAL DRAFT. Going public still needs Day's explicit yes. -->
-
 # Contributing a card
 
 One card = one model + one quant + one engine + one GPU layout. Card 001 is Flash 6.05 on 8 cards. Card 002 is Qwen 27B Q8, with the speed row at 4 cards and the HumanEval+ row at 8 cards called out separately. Do not put a second model on an active card.
@@ -14,7 +12,6 @@ One card = one model + one quant + one engine + one GPU layout. Card 001 is Flas
 6. **Say what you could not verify.** Each card ends with a "Verified vs not verified" list.
 7. **No client names.** Cards never mention who asked for a config or where it is used.
 8. **Plain style.** Short sentences, no hype, no em dashes.
-9. **Stay private.** Do not publish the repo. Going public still needs Day's explicit yes.
 
 ## File naming
 
