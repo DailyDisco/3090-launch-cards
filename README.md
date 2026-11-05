@@ -1,44 +1,54 @@
-<!-- PRIVATE / INTERNAL DRAFT. Not published. No GitHub repo exists yet. Do not share until Day says yes. -->
+<!-- PRIVATE / INTERNAL DRAFT. Not published. Going public still needs Day's explicit yes. Do not share until Day says yes. -->
 
 # 8x 3090 launch cards
 
-Copy-paste vLLM and SGLang launch commands for new open models on consumer RTX 3090s over PCIe (no NVLink), at 2, 4 and 8 cards.
+Measured notes for models on consumer RTX 3090s over PCIe (no NVLink). This repo stays private until Day gives an explicit yes.
 
-Every card has:
+Every active card has:
 
-- the exact launch command,
-- the flags that matter and the problem each one prevents,
-- numbers measured by Day on one real rig (day-vault, see [hardware.md](hardware.md)).
+- the configuration the named protocol actually recorded,
+- the launch command only when that run recorded one,
+- numbers measured by Day on day-vault (see [hardware.md](hardware.md)).
 
-No number on a card is estimated. If a field says `TBD (Day's run)`, it has not been measured yet.
+No number on a card is estimated. If the cited protocol did not record a field, the card says so. It does not borrow a number from another row, another date, or another metric.
+
+Nanbeige is not an active card. The Nanbeige vs Qwen draft and `scripts/card-001-nanbeige-vs-qwen-tp4.sh` are removed.
 
 ## Cards
 
-| # | Card | Engine | TP | Status |
-|---|------|--------|----|--------|
-| 1 | [Nanbeige4.3-33B vs Qwen3.8-27B, BF16](cards/001-nanbeige4.3-33b-vs-qwen3.8-27b-tp4.md) | vLLM 0.32.0 | 4 | command ready, numbers TBD |
+| # | Card | Engine (as named in the Nov 1 quality row) | Cards | Status |
+|---|------|--------------------------------------------|-------|--------|
+| 1 | [Qwen3.8 Flash (Flash 6.05), EXL3 + MTP](cards/001-qwen3.8-flash-6.05-exl3-8gpu.md) | EXL3 + MTP | 8 | Nov 1 numbers filled. Serve command was not in the protocol files. |
+| 2 | [Qwen3.8-27B Q8, llama.cpp + MTP](cards/002-qwen3.8-27b-q8-llamacpp-mtp-4gpu.md) | llama.cpp + MTP | 4 on the speed row; HumanEval+ for this checkpoint was 8 cards | Nov 1 numbers filled. Serve command was not in the protocol files. |
 
 New card? Copy [cards/_TEMPLATE.md](cards/_TEMPLATE.md). Format rules are in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## How the numbers are taken
 
-- [scripts/card-001-nanbeige-vs-qwen-tp4.sh](scripts/card-001-nanbeige-vs-qwen-tp4.sh): the one-paste run for card 1. It starts each server, runs `vllm bench serve` (random data, `--ignore-eos`), logs power and VRAM every 500 ms, and writes `summary.json`.
-- [scripts/bench.py](scripts/bench.py): a small engine-agnostic stub for future cards. It works against any OpenAI-compatible server (vLLM, SGLang) and records tok/s, TTFT, VRAM and power to JSON.
+Active cards cite the 1 November 2026 DayVault protocol, measured by Day on day-vault:
 
-Definitions used on every card:
+- [evidence/Benchmark-2026-11-01-SUMMARY.md](evidence/Benchmark-2026-11-01-SUMMARY.md)
+- [evidence/Benchmark-2026-11-01-results.json](evidence/Benchmark-2026-11-01-results.json)
 
-- **Prefill tok/s** = input tokens / mean TTFT. Includes queueing, so treat it as a floor.
-- **Decode tok/s (single stream)** = 1000 / mean TPOT, one request in flight.
-- **Output tok/s at concurrency N** = total output tokens / wall time with N requests in flight.
-- **Power** = `nvidia-smi power.draw` per GPU, sampled every 500 ms. All cards are capped at 160 W.
+Throughput in that protocol (SUMMARY section 2): 2,400-token prompts, 256-token answers, 90-second window, at 1, 4, 8, and 16 clients. The figures are **end-to-end output tokens per second per user, including prefill and queue wait**.
+
+They are not `median_decode_tokens_per_s`. That field is decode-only, drops queue time, and reads far higher. The SUMMARY's own example is 103 tokens/s at 16 clients. Do not put that field on a card as the user-facing speed.
+
+The Nov 1 protocol is not comparable to the 28 October 2026 Table 1. The SUMMARY says the metrics are not the same. Do not merge the figures.
+
+Older bench wording (prefill tok/s = input tokens / mean TTFT, decode tok/s = 1000 / mean TPOT, output tok/s = total output tokens / wall time) is not what the Nov 1 cards report. Those columns were not measured in that protocol.
+
+[scripts/bench.py](scripts/bench.py) is a stub for a future OpenAI-compatible server. It did not produce the Nov 1 numbers.
+
+Power cap for the protocol: 160 W per GPU, unlock off. See [hardware.md](hardware.md).
 
 ## What this is not
 
-- Not a leaderboard. One rig, one set of settings, dated.
-- Not quality evals. Speed and fit only.
+- Not a leaderboard. One rig, one dated protocol.
+- Not a published repo. Going public still needs Day's explicit yes.
+
+A paid pack with more models and tuned configs is planned. That writeup is not in this repo.
 
 ## License
 
-MIT, see [LICENSE](LICENSE). Model weights keep their own licenses (listed per card).
-
-A paid pack with more models and tuned configs is planned. See [PAID_PACK.md](PAID_PACK.md) (internal).
+MIT, see [LICENSE](LICENSE). Model weights keep their own licenses. The Nov 1 files do not record those licenses, so the cards do not invent them.

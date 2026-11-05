@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""Engine-agnostic bench stub for launch cards (STUB, internal draft).
+"""Engine-agnostic bench stub (STUB, internal draft).
 
-Hits any OpenAI-compatible server (vLLM or SGLang) with streaming completions,
-samples nvidia-smi every 500 ms, and writes one JSON file with:
+Hits an OpenAI-compatible server with streaming completions, samples nvidia-smi
+every 500 ms, and writes one JSON file with:
   ttft_ms, prefill_tok_s, decode_tok_s, output_tok_s, vram_mib, power_w.
 
 It never invents numbers: if a value cannot be measured it is written as null.
-For card 001 use scripts/card-001-nanbeige-vs-qwen-tp4.sh (vllm bench serve) instead.
+This stub did not produce the 1 November 2026 DayVault cards. Those numbers are
+in evidence/Benchmark-2026-11-01-SUMMARY.md and
+evidence/Benchmark-2026-11-01-results.json (end-to-end per-user tok/s).
 
-Usage:
-  python3 scripts/bench.py --model Qwen/Qwen3.8-27B --input-len 8192 --output-len 512 \
-      --concurrency 1 --num-prompts 4 --out results/qwen-decode8k.json
+Usage (illustration only, not a measured Nov 1 invocation):
+  python3 scripts/bench.py --model <served-model-name> --input-len 8192 --output-len 512 \
+      --concurrency 1 --num-prompts 4 --out results/run.json
 Stdlib only.
 """
 from __future__ import annotations
